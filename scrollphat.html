@@ -1,0 +1,93 @@
+<!--
+Memo to self: interactions with this node
+Set a single pixel (x, y, value, clear previous?)
+Set multiple pixels (2D array or 1D 5-bit array?)
+Set a row(y, value, clear previous?)
+Set a column (x, value, clear previous?)
+Write a string (string, x-offset)
+Clear the display (value)
+Set graph (values, high value, low value)
+Set brightness
+Scroll the buffer (option for writing string and setting all pixels?)
+Scroll to a position
+Rotate the display
+-->
+
+<!--
+* node-red-contrib-scrollphat controls the Pimoroni Scroll Phat
+* Copyright (C) 2017 Brian Burton <api@yayoi.co.uk>
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+ 
+<!-- Node definition -->
+<script type="text/javascript">
+  RED.nodes.registerType('ScrPhatSetPixel',{
+    // node definition
+    category: "Brian",
+    inputs: 1,
+    outputs: 0,
+    color: "#C0DEED",
+    paletteLabel: "ScrPhat SetPix",
+    label: function() {
+      return this.name||"ScrPhat SetPix";
+    },
+    icon: "light.png",
+    align: "right"
+  });
+</script>
+
+<!-- Edit dialog definition -->
+<script type="text/x-red" data-template-name="ScrPhatSetPixel">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label><input type="text" id="node-input-name" placeholder="Name">
+  </div>
+  <div class="form-row"><label for="node-input-column"><i class="fa fa-long-arrow-down"></i> Column</label>
+    <select id="node-input-column">
+      <option value="0">1</option> 
+      <option value="1">2</option>
+      <option value="2">3</option>
+      <option value="3">4</option> 
+      <option value="4">5</option> 
+      <option value="5">6</option> 
+      <option value="6">7</option> 
+      <option value="7">8</option> 
+      <option value="8">9</option> 
+      <option value="9">10</option> 
+      <option value="10">11</option> 
+    </select>
+  </div>
+  <div class="form-row">
+    <label for="node-input-row"><i class="fa fa-long-arrow-right"></i> Row</label>
+    <select id="node-input-row">
+      <option value="0">1</option> 
+      <option value="1">2</option>
+      <option value="2">3</option>
+      <option value="3">4</option> 
+      <option value="4">5</option> 
+    </select>
+  </div>
+  <div class="form-row">
+    <label for="node-input-onoroff"><i class="fa fa-power-off"></i> On or Off?</label><input type="checkbox" id="node-input-onoroff" placeholder="On or Off?">
+  </div>
+  <div class="form-row">
+    <label for="node-input-additive"><i class="fa fa-eraser"></i> Clear previous?</label><input type="checkbox" id="node-input-additive" placeholder="Clear previous?">
+  </div>
+  <div class="form-tips"><b>Tip:</b> This is here to help.</div>
+</script>
+
+<!-- Help text definition -->
+<script type="text/x-red" data-help-name="ScrPhatSetPixel">
+  <p>This node is used to set individual pixels or simple combinations of pixels on or off.</p>
+</script>
