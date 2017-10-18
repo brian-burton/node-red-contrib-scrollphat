@@ -6,8 +6,8 @@ To do that, I first had to write some code that would prove the viability (and m
 
 ## What is this, then?
 
-A set of nodes for NodeRed, using native Javascript with the help of the [i2c](https://www.npmjs.com/package/i2c) node.js library.
+A set of nodes for NodeRed, using native Javascript with the help of the [i2c-bus](https://www.npmjs.com/package/i2c-bus) node.js library.
 
-## How do I use it?
+## Installation
 
-You can't "npm install" this yet because it's still in development. You can "git clone" and then "npm install -g" in a directory. It may or may not work, so you pays your money and you takes your choice until this README says otherwise...
+You can't "npm install" this yet because it's still in development. You can "git clone" and then "npm install" in a directory. It may or may not work, so you pays your money and you takes your choice until this README says otherwise...

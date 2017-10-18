@@ -30,18 +30,18 @@ Rotate the display
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
- 
+
 <!-- Node definition -->
 <script type="text/javascript">
-  RED.nodes.registerType('ScrPhatSetPixel',{
+  RED.nodes.registerType('spSetPixel',{
     // node definition
     category: "Brian",
     inputs: 1,
     outputs: 0,
     color: "#C0DEED",
-    paletteLabel: "ScrPhat SetPix",
+    paletteLabel: "Scroll pHAT Set Pixel",
     label: function() {
-      return this.name||"ScrPhat SetPix";
+      return this.name||"Scroll pHAT Set Pixel";
     },
     icon: "light.png",
     align: "right"
@@ -49,45 +49,24 @@ Rotate the display
 </script>
 
 <!-- Edit dialog definition -->
-<script type="text/x-red" data-template-name="ScrPhatSetPixel">
+<script type="text/x-red" data-template-name="spSetPixel">
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label><input type="text" id="node-input-name" placeholder="Name">
   </div>
-  <div class="form-row"><label for="node-input-column"><i class="fa fa-long-arrow-down"></i> Column</label>
-    <select id="node-input-column">
-      <option value="0">1</option> 
-      <option value="1">2</option>
-      <option value="2">3</option>
-      <option value="3">4</option> 
-      <option value="4">5</option> 
-      <option value="5">6</option> 
-      <option value="6">7</option> 
-      <option value="7">8</option> 
-      <option value="8">9</option> 
-      <option value="9">10</option> 
-      <option value="10">11</option> 
-    </select>
-  </div>
-  <div class="form-row">
-    <label for="node-input-row"><i class="fa fa-long-arrow-right"></i> Row</label>
-    <select id="node-input-row">
-      <option value="0">1</option> 
-      <option value="1">2</option>
-      <option value="2">3</option>
-      <option value="3">4</option> 
-      <option value="4">5</option> 
-    </select>
-  </div>
-  <div class="form-row">
-    <label for="node-input-onoroff"><i class="fa fa-power-off"></i> On or Off?</label><input type="checkbox" id="node-input-onoroff" placeholder="On or Off?">
-  </div>
-  <div class="form-row">
-    <label for="node-input-additive"><i class="fa fa-eraser"></i> Clear previous?</label><input type="checkbox" id="node-input-additive" placeholder="Clear previous?">
-  </div>
-  <div class="form-tips"><b>Tip:</b> This is here to help.</div>
 </script>
 
 <!-- Help text definition -->
-<script type="text/x-red" data-help-name="ScrPhatSetPixel">
-  <p>This node is used to set individual pixels or simple combinations of pixels on or off.</p>
+<script type="text/x-red" data-help-name="spSetPixel">
+  <p>This node is used to set individual Pimoroni Scroll pHAT pixels on or off.</p>
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload.x<span class="property-type">number</span></dt>
+    <dd>The column to be altered</dd>
+    <dt>payload.y<span class="property-type">number</span></dt>
+    <dd>The row to be altered.</dd>
+    <dt>payload.value<span class="property-type">boolean</span></dt>
+    <dd><code>true</code> to turn LED on, <code>false</code> to turn off.</dd>
+    <dt class="optional">payload.additive<span class="property-type">boolean</span></dt>
+    <dd>Define whether the change should add to the existing pattern or reset all the other LEDs. Defaults to <code>true</code></dd>
+  </dl>
 </script>
