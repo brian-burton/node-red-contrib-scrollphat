@@ -9,9 +9,11 @@ To do that, I first had to write some code that would prove the viability (and m
 A set of nodes for NodeRed, using native Javascript with the help of the [i2c-bus](https://www.npmjs.com/package/i2c-bus) node.js library.
 
 ### Set Pixels
+(https://github.com/brian-burton/node-red-contrib-scrollphat/raw/master/images/setPixel.PNG)
 This node sets individual pixels given x, y, desired state and additionally can be instructed to make additive changes to the existing display or reset the display back to blank before adding the new pixel.
 
 ### Clear
+(https://github.com/brian-burton/node-red-contrib-scrollphat/raw/master/images/Clear.PNG)
 This node clears the whole Scroll pHAT back to off or on, given a boolean, string, or numeric instruction.
 
 ## Installation
