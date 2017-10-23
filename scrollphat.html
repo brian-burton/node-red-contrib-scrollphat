@@ -112,3 +112,41 @@ Node to turn the whole SCroll pHAT on or off
     <dd>Set to <code>true</code>, <code>"on"</code> (case insensitive) or <code>1</code> to turn all pixels on. Set to <code>false</code>, <code>"off"</code> (case insensitive) or <code>0</code> to turn all pixels off.</dd>
   </dl>
 </script>
+
+<!--
+Node to adjust Scroll pHAT brightness
+-->
+
+<!-- Node definition -->
+<script type="text/javascript">
+  RED.nodes.registerType('spBrightness',{
+    // node definition
+    category: "Brian",
+    inputs: 1,
+    outputs: 0,
+    color: "#C0DEED",
+    paletteLabel: "Change Scroll pHAT Brightness",
+    label: function() {
+      return this.name||"Change Scroll pHAT Brightness";
+    },
+    icon: "light.png",
+    align: "right"
+  });
+</script>
+
+<!-- Edit dialog definition -->
+<script type="text/x-red" data-template-name="spBrightness">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label><input type="text" id="node-input-name" placeholder="Name">
+  </div>
+</script>
+
+<!-- Help text definition -->
+<script type="text/x-red" data-help-name="spBrightness">
+  <p>This node is used to set the brightness of the Pimoroni Scroll pHAT.</p>
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload<span class="property-type">number</span></dt>
+    <dd>Set to a number between 0 and 100 representing the desired brightness in percent.</dd>
+  </dl>
+</script>

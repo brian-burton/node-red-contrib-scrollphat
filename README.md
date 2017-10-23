@@ -15,5 +15,10 @@ This node sets individual pixels given x, y, desired state and additionally can 
 
 This node clears the whole Scroll pHAT back to off or on, given a boolean, string, or numeric instruction.
 
+### Brightness
+![](images/Brightness.PNG?raw=true)
+
+This node sets the brightness of the Scroll pHAT as a numberic percentage.
+
 ## Installation
 You can't "npm install" this yet because it's still in development. You can "git clone" and then "npm install" in a directory. It may or may not work, so you pays your money and you takes your choice until this README says otherwise...

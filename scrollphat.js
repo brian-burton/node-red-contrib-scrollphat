@@ -9,21 +9,25 @@ module.exports = function (RED) {
   var SP_ADDRESS = 0x60;
   // Starting address for the matrix 1 data register
   var SP_COMMAND = 0x01;
-  // Address for mode register
+  // Address for configuration register
   var SP_MODE_COMMAND = 0x00;
+  // Address for brightness register
+  var SP_BRIGHTNESS_COMMAND = 0x19;
   // Configuration register set to 5x11 LED matrix
-  var SP_MODE = new Uint8Array(1).fill(0x03);
+  var SP_MODE_5X11 = new Uint8Array(1).fill(0x03);
   //buffer for pixel data which will be written the matrix 1 data register
-  var buffer = new Uint8Array(12).fill(0x03);
+  var buffer = new Uint8Array(12).fill(0x00);
   //After the 11 columns, we need to send 0xFF to finish the message to the I2C slave
   buffer[11] = 0xff;
+  // Buffer for brightness level
+  var brightness = new Uint8Array(1);
   
   var initok = (function() {
     try {
       var scrollphat = i2c.openSync(BUS_ADDRESS);
-      scrollphat.writeI2cBlockSync(SP_ADDRESS, SP_MODE_COMMAND, 1, SP_MODE);
+      scrollphat.writeI2cBlockSync(SP_ADDRESS, SP_MODE_COMMAND, 1, SP_MODE_5X11);
       scrollphat.closeSync();
-      console.log("Init OK");
+      //console.log("Init OK");
     } catch (e) {
       throw ("Failed to initialise scrollphat: " + e);
       return false;
@@ -122,7 +126,48 @@ module.exports = function (RED) {
     });
   }
 
+  function spBrightnessNode(config) {
+    RED.nodes.createNode(this,config);
+    var node = this;
+
+    try {
+      var scrollphat = i2c.openSync(BUS_ADDRESS);
+      if (scrollphat.hasOwnProperty("_forceAccess")) {
+        node.status({fill: "green", shape: "dot", text: "connected"});
+      } else {
+        node.status({fill: "red", shape: "ring", text: "error"});
+        throw "I2C connection error";
+      }
+    } catch (e) {
+      node.error("There was a problem: " + e);
+    }
+
+    node.on("input", function(msg) {
+      // Preflight check on msg.payload
+      if (msg.payload >= 0 && msg.payload <= 100) {
+        //Need an integer that's definitely between 0 and 128
+        brightness[0] = Math.max(0,(Math.min(128,(Math.round((128*msg.payload) / 100)))));
+      } else {
+        node.warn("Invalid Scroll pHAT brightness level");
+      }
+
+      //Write the entire buffer to the Scroll Phat
+      scrollphat.writeI2cBlockSync(SP_ADDRESS, SP_BRIGHTNESS_COMMAND, 1, brightness);
+    });
+    node.on("close", function() {
+      try {
+        scrollphat.closeSync();
+        if (scrollphat._peripherals.length === 0) {
+          // node.warn("Scroll Phat i2c connection closed.");
+        } else {throw "Failed to close scrollphat connection";}
+      } catch (e) {
+        node.error("Error: " + e);
+      }
+    });
+  }
+
   RED.nodes.registerType("spSetPixel", spSetPixelNode);
   RED.nodes.registerType("spClear", spClearNode);
+  RED.nodes.registerType("spBrightness", spBrightnessNode);
 };
 
