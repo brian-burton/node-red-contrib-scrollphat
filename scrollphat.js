@@ -9,10 +9,26 @@ module.exports = function (RED) {
   var SP_ADDRESS = 0x60;
   // Starting address for the matrix 1 data register
   var SP_COMMAND = 0x01;
+  // Address for mode register
+  var SP_MODE_COMMAND = 0x00;
+  // Configuration register set to 5x11 LED matrix
+  var SP_MODE = new Uint8Array(1).fill(0x03);
   //buffer for pixel data which will be written the matrix 1 data register
-  var buffer = new Uint8Array(12).fill(0x00);
+  var buffer = new Uint8Array(12).fill(0x03);
   //After the 11 columns, we need to send 0xFF to finish the message to the I2C slave
   buffer[11] = 0xff;
+  
+  var initok = (function() {
+    try {
+      var scrollphat = i2c.openSync(BUS_ADDRESS);
+      scrollphat.writeI2cBlockSync(SP_ADDRESS, SP_MODE_COMMAND, 1, SP_MODE);
+      scrollphat.closeSync();
+      console.log("Init OK");
+    } catch (e) {
+      throw ("Failed to initialise scrollphat: " + e);
+      return false;
+    }
+  })();
 
   function spSetPixelNode(config) {
     RED.nodes.createNode(this,config);
