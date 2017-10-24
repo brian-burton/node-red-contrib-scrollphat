@@ -20,5 +20,10 @@ This node clears the whole Scroll pHAT back to off or on, given a boolean, strin
 
 This node sets the brightness of the Scroll pHAT as a numberic percentage.
 
+### Column
+![](images/Column.PNG?raw=true)
+
+This node sets a column to a percentage value, or defaults to fully lit if no percentage given. Useful for graphs and patterns.
+
 ## Installation
 You can't "npm install" this yet because it's still in development. You can "git clone" and then "npm install" in a directory. It may or may not work, so you pays your money and you takes your choice until this README says otherwise...

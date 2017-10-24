@@ -187,13 +187,8 @@ module.exports = function (RED) {
       if (msg.payload.x >= 0 && msg.payload.x <= 10) {
         //set percent if not set; correct invalid percentage
         var spPercent = Math.max(0,Math.min(100,msg.payload.percent)) || 100;
-        //case 100 set bit 0
-        //case >=80 set bit 1
-        //case >=60 set bit 2
-        //case >=40 set bit 3
-        //case >=20 set bit 4
         buffer[msg.payload.x] = 0x00;
-        switch (spPercent) {
+        switch (true) {
           case spPercent == 100:
             buffer[msg.payload.x] |= (1 << 0);
           case spPercent >= 80:
