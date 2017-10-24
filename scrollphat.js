@@ -27,7 +27,7 @@ module.exports = function (RED) {
       var scrollphat = i2c.openSync(BUS_ADDRESS);
       scrollphat.writeI2cBlockSync(SP_ADDRESS, SP_MODE_COMMAND, 1, SP_MODE_5X11);
       scrollphat.closeSync();
-      //console.log("Init OK");
+      console.log("Init OK");
     } catch (e) {
       throw ("Failed to initialise scrollphat: " + e);
       return false;
@@ -166,8 +166,69 @@ module.exports = function (RED) {
     });
   }
 
+  function spColumnNode(config) {
+    RED.nodes.createNode(this,config);
+    var node = this;
+
+    try {
+      var scrollphat = i2c.openSync(BUS_ADDRESS);
+      if (scrollphat.hasOwnProperty("_forceAccess")) {
+        node.status({fill: "green", shape: "dot", text: "connected"});
+      } else {
+        node.status({fill: "red", shape: "ring", text: "error"});
+        throw "I2C connection error";
+      }
+    } catch (e) {
+      node.error("There was a problem: " + e);
+    }
+
+    node.on("input", function(msg) {
+      // Preflight check on msg.payload
+      if (msg.payload.x >= 0 && msg.payload.x <= 10) {
+        //set percent if not set; correct invalid percentage
+        var spPercent = Math.max(0,Math.min(100,msg.payload.percent)) || 100;
+        //case 100 set bit 0
+        //case >=80 set bit 1
+        //case >=60 set bit 2
+        //case >=40 set bit 3
+        //case >=20 set bit 4
+        buffer[msg.payload.x] = 0x00;
+        switch (spPercent) {
+          case spPercent == 100:
+            buffer[msg.payload.x] |= (1 << 0);
+          case spPercent >= 80:
+            buffer[msg.payload.x] |= (1 << 1);
+          case spPercent >= 60:
+            buffer[msg.payload.x] |= (1 << 2);
+          case spPercent >= 40:
+            buffer[msg.payload.x] |= (1 << 3);
+          case spPercent >= 20:
+            buffer[msg.payload.x] |= (1 << 4);
+            break;
+          default:
+        }
+      } else {
+        node.warn("Invalid column specified");
+      }
+      
+      //Write the entire buffer to the Scroll Phat
+      scrollphat.writeI2cBlockSync(SP_ADDRESS, SP_COMMAND, 12, buffer);
+    });
+    node.on("close", function() {
+      try {
+        scrollphat.closeSync();
+        if (scrollphat._peripherals.length === 0) {
+          // node.warn("Scroll Phat i2c connection closed.");
+        } else {throw "Failed to close scrollphat connection";}
+      } catch (e) {
+        node.error("Error: " + e);
+      }
+    });
+  }
+
   RED.nodes.registerType("spSetPixel", spSetPixelNode);
   RED.nodes.registerType("spClear", spClearNode);
   RED.nodes.registerType("spBrightness", spBrightnessNode);
+  RED.nodes.registerType("spColumn", spColumnNode);
 };
 

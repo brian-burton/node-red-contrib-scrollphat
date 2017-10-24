@@ -1,13 +1,10 @@
 <!--
 Memo to self: interactions with this node
-Set a single pixel (x, y, value, clear previous?)
 Set multiple pixels (2D array or 1D 5-bit array?)
 Set a row(y, value, clear previous?)
 Set a column (x, value, clear previous?)
 Write a string (string, x-offset)
-Clear the display (value)
 Set graph (values, high value, low value)
-Set brightness
 Scroll the buffer (option for writing string and setting all pixels?)
 Scroll to a position
 Rotate the display
@@ -148,5 +145,45 @@ Node to adjust Scroll pHAT brightness
   <dl class="message-properties">
     <dt>payload<span class="property-type">number</span></dt>
     <dd>Set to a number between 0 and 100 representing the desired brightness in percent.</dd>
+  </dl>
+</script>
+
+<!--
+Node to draw column graph on Scroll pHAT
+-->
+
+<!-- Node definition -->
+<script type="text/javascript">
+  RED.nodes.registerType("spColumn",{
+    // node definition
+    category: "Brian",
+    inputs: 1,
+    outputs: 0,
+    color: "#C0DEED",
+    paletteLabel: "Scroll pHAT Column",
+    label: function() {
+      return this.name||"Scroll pHAT Column";
+    },
+    icon: "light.png",
+    align: "right"
+  });
+</script>
+
+<!-- Edit dialog definition -->
+<script type="text/x-red" data-template-name="spColumn">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label><input type="text" id="node-input-name" placeholder="Name">
+  </div>
+</script>
+
+<!-- Help text definition -->
+<script type="text/x-red" data-help-name="spColumn">
+  <p>This node is used to set a Pimoroni Scroll pHAT column (5 pixels) to a percentage value, creating the possibility of graphs.</p>
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload.x<span class="property-type">number</span></dt>
+    <dd>Set to a number between 0 and 10 representing the column to be set.</dd>
+    <dt>payload.percent<span class="property-type optional">number</span></dt>
+    <dd>Set to a number between 0 and 100 representing the desired value of column percent. Defaults to 100% if not set.</dd>
   </dl>
 </script>
