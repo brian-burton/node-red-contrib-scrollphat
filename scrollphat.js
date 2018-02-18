@@ -221,9 +221,55 @@ module.exports = function (RED) {
     });
   }
 
+  function spRowNode(config) {
+    RED.nodes.createNode(this,config);
+    var node = this;
+
+    try {
+      var scrollphat = i2c.openSync(BUS_ADDRESS);
+      if (scrollphat.hasOwnProperty("_forceAccess")) {
+        node.status({fill: "green", shape: "dot", text: "connected"});
+      } else {
+        node.status({fill: "red", shape: "ring", text: "error"});
+        throw "I2C connection error";
+      }
+    } catch (e) {
+      node.error("There was a problem: " + e);
+    }
+
+    node.on("input", function(msg) {
+      // Preflight check on msg.payload
+      if (msg.payload.y >= 0 && msg.payload.y <= 4) {
+        //set percent if not set; correct invalid percentage
+        var spPercent = Math.max(0,Math.min(100,msg.payload.percent)) || 100;
+        for (var ix = 0; ix < 11; ix++){
+          if (spPercent >= 100*((ix+1)/11) ) {
+            buffer[ix] |= (1 << msg.payload.y);
+          } else {
+            buffer[ix] &= ~(1 << msg.payload.y);
+          }
+        }
+      } else {
+        node.warn("Invalid row specified");
+      }
+      
+      //Write the entire buffer to the Scroll Phat
+      scrollphat.writeI2cBlockSync(SP_ADDRESS, SP_COMMAND, 12, buffer);
+    });
+    node.on("close", function() {
+      try {
+        scrollphat.closeSync();
+        if (scrollphat._peripherals.length === 0) {
+          // node.warn("Scroll Phat i2c connection closed.");
+        } else {throw "Failed to close scrollphat connection";}
+      } catch (e) {
+        node.error("Error: " + e);
+      }
+    });
+  }
   RED.nodes.registerType("spSetPixel", spSetPixelNode);
   RED.nodes.registerType("spClear", spClearNode);
   RED.nodes.registerType("spBrightness", spBrightnessNode);
   RED.nodes.registerType("spColumn", spColumnNode);
+  RED.nodes.registerType("spRow", spRowNode);
 };
-

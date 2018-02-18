@@ -1,10 +1,6 @@
-<!--
-Memo to self: interactions with this node
+nteractions with this node
 Set multiple pixels (2D array or 1D 5-bit array?)
-Set a row(y, value, clear previous?)
-Set a column (x, value, clear previous?)
 Write a string (string, x-offset)
-Set graph (values, high value, low value)
 Scroll the buffer (option for writing string and setting all pixels?)
 Scroll to a position
 Rotate the display
@@ -185,5 +181,45 @@ Node to draw column graph on Scroll pHAT
     <dd>Set to a number between 0 and 10 representing the column to be set.</dd>
     <dt>payload.percent<span class="property-type optional">number</span></dt>
     <dd>Set to a number between 0 and 100 representing the desired value of column percent. Defaults to 100% if not set.</dd>
+  </dl>
+</script>
+
+<!--
+Node to draw row graph on Scroll pHAT
+-->
+
+<!-- Node definition -->
+<script type="text/javascript">
+  RED.nodes.registerType("spRow",{
+    // node definition
+    category: "Brian",
+    inputs: 1,
+    outputs: 0,
+    color: "#C0DEED",
+    paletteLabel: "Scroll pHAT Row",
+    label: function() {
+      return this.name||"Scroll pHAT Row";
+    },
+    icon: "light.png",
+    align: "right"
+  });
+</script>
+
+<!-- Edit dialog definition -->
+<script type="text/x-red" data-template-name="spRow">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label><input type="text" id="node-input-name" placeholder="Name">
+  </div>
+</script>
+
+<!-- Help text definition -->
+<script type="text/x-red" data-help-name="spRow">
+  <p>This node is used to set a Pimoroni Scroll pHAT row (11 pixels) to a percentage value, creating the possibility of graphs.</p>
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload.y<span class="property-type">number</span></dt>
+    <dd>Set to a number between 0 and 10 representing the row to be set.</dd>
+    <dt>payload.percent<span class="property-type optional">number</span></dt>
+    <dd>Set to a number between 0 and 100 representing the desired value of row percent. Defaults to 100% if not set.</dd>
   </dl>
 </script>

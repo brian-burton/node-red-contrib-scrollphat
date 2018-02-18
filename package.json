@@ -18,10 +18,7 @@
   "license": "MIT",
   "node-red": {
     "nodes": {
-      "spSetPixel": "scrollphat.js"
-      "spClear": "scrollphat.js"
-      "spBrightness": "scrollphat.js"
-      "spColumn": "scrollphat.js"
+      "scrollphat": "scrollphat.js"
     }
   }
 }
