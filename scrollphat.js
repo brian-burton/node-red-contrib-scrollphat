@@ -20,7 +20,7 @@ module.exports = function (RED) {
   //After the 11 columns, we need to send 0xFF to finish the message to the I2C slave
   buffer.writeUInt8(0xff, 11);
   // Buffer for brightness level
-  var brightness = new Uint8Array(1);
+  var brightness = Buffer.alloc(1);
   
   var initok = (function() {
     try {
