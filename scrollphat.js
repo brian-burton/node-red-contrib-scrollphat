@@ -63,7 +63,7 @@ module.exports = function (RED) {
         node.additive = msg.payload.additive && true;
 
         //Add LEDs to existing pattern by default or reset to just new pixel if user specifically sets msg.payload.additive to false
-        if (node.additive === false){ buffer.fill(0x00,0,buffer.length-1); }
+        if (node.additive === false){ buffer.fill(0x00,0,11); }
 
         //This is transcribed from set_pixel in https://github.com/pimoroni/scroll-phat/blob/master/library/scrollphat/IS31FL3730.py
         //Lots of bitwise shifting to set the right pixel in column x ( buffer elements 0-10) and row y (bits 0-4).
@@ -104,9 +104,9 @@ module.exports = function (RED) {
     node.on("input", function(msg) {
       // Preflight check on msg.payload
       if (msg.payload === true || msg.payload.toString().toLowerCase() === "on" || msg.payload === 1) {
-        buffer.fill(0x1F,0,buffer.length-1);
+        buffer.fill(0x1F,0,11);
       } else if (msg.payload === false || msg.payload.toString().toLowerCase() === "off" || msg.payload === 0) {
-        buffer.fill(0x00,0,buffer.length-1);
+        buffer.fill(0x00,0,11);
       } else {
         node.warn("Invalid Scroll pHAT clear msg.payload");
       }
