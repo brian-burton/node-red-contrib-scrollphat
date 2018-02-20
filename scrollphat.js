@@ -14,11 +14,11 @@ module.exports = function (RED) {
   // Address for brightness register
   var SP_BRIGHTNESS_COMMAND = 0x19;
   // Configuration register set to 5x11 LED matrix
-  var SP_MODE_5X11 = new Uint8Array(1).fill(0x03);
+  var SP_MODE_5X11 = Buffer.alloc(1, 3);
   //buffer for pixel data which will be written the matrix 1 data register
-  var buffer = new Uint8Array(12).fill(0x00);
+  var buffer = Buffer.alloc(12, 0);
   //After the 11 columns, we need to send 0xFF to finish the message to the I2C slave
-  buffer[11] = 0xff;
+  buffer.writeUInt8(0xff, 11);
   // Buffer for brightness level
   var brightness = new Uint8Array(1);
   
@@ -63,7 +63,7 @@ module.exports = function (RED) {
         node.additive = msg.payload.additive && true;
 
         //Add LEDs to existing pattern by default or reset to just new pixel if user specifically sets msg.payload.additive to false
-        if (node.additive === false){ buffer.fill(0x00,0,11); }
+        if (node.additive === false){ buffer.fill(0x00,0,buffer.length-1); }
 
         //This is transcribed from set_pixel in https://github.com/pimoroni/scroll-phat/blob/master/library/scrollphat/IS31FL3730.py
         //Lots of bitwise shifting to set the right pixel in column x ( buffer elements 0-10) and row y (bits 0-4).
@@ -104,9 +104,9 @@ module.exports = function (RED) {
     node.on("input", function(msg) {
       // Preflight check on msg.payload
       if (msg.payload === true || msg.payload.toString().toLowerCase() === "on" || msg.payload === 1) {
-        buffer.fill(0x1F,0,11);
+        buffer.fill(0x1F,0,buffer.length-1);
       } else if (msg.payload === false || msg.payload.toString().toLowerCase() === "off" || msg.payload === 0) {
-        buffer.fill(0x00,0,11);
+        buffer.fill(0x00,0,buffer.length-1);
       } else {
         node.warn("Invalid Scroll pHAT clear msg.payload");
       }
