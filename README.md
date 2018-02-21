@@ -39,4 +39,4 @@ This node sets a row to a percentage value, or defaults to fully lit if no perce
 
 ## Installation
 
-You can't "npm install" this yet because it narks me that npmjs.com [want to give my email address to everybody](https://github.com/npm/www/issues/16). You can "git clone" and then "npm install" in a directory. It may or may not work, so you pays your money and you takes your choice until this README says otherwise...
+You can't ```npm install``` this yet because it narks me that npmjs.com [want to give my email address to everybody](https://github.com/npm/www/issues/16). You can ```git clone``` and then ```npm install```, or just ```git clone``` straight into your '''nodesDir''' (see your ```settings.js``` for more details on ```nodesDir```).
